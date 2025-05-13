@@ -1,0 +1,24 @@
+import { useEffect, useState, type ReactNode } from "react";
+import { AuthContext } from "./AuthContext";
+import { getlocalItem } from "../utils/getLocalItem";
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [isConnected, setIsconnected] = useState(false);
+  const toggleConnected = () => {
+    setIsconnected(!isConnected);
+    console.log("connecter");
+  };
+
+  useEffect(() => {
+    const token = getlocalItem("token");
+    if (!token.trim()) {
+      console.log("Token indisponible vous n'etes pas connecter");
+    }
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ isConnected, toggleConnected }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}

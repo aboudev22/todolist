@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import NavBar from "./components/NavBar";
+import useTheme from "./hooks/useTheme";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
+  const { theme } = useTheme();
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div
+      className={`w-screen h-screen flex flex-col items-center pt-4 transition-all duration-300 ${
+        theme === "light" ? "bg-amber-100" : "bg-neutral-800"
+      }`}
+    >
+      <NavBar />
+      <h1
+        className={`font-bold text-center text-4xl md:text-7xl ${
+          theme === "light" ? "text-black" : "text-white"
+        }`}
+      >
+        Up your productivity like never befor.
+      </h1>
+      <button
+        className={`p-2 rounded-full font-bold ${
+          theme === "light"
+            ? "bg-black text-white"
+            : "bg-white text-black cursor-pointer"
+        }`}
+      >
+        Get started
+      </button>
+    </div>
+  );
 }
-
-export default App
