@@ -1,3 +1,9 @@
+type User = {
+  name: string;
+  email: string;
+  password: string;
+};
+
 type authContextType = {
   isConnected: boolean;
   toggleConnected: () => void;
@@ -10,4 +16,4 @@ type ThemeContexteType = {
   toggleTheme: () => void;
 };
 
-export type { authContextType, ThemeType, ThemeContexteType };
+export type { User, authContextType, ThemeType, ThemeContexteType };

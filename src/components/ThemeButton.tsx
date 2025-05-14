@@ -1,10 +1,12 @@
+import clsx from "clsx";
 import { useState } from "react";
 
 type ButtonTheme = {
   toggleTheme: () => void;
+  className?: string;
 };
 
-export default function ThemeButton({ toggleTheme }: ButtonTheme) {
+export default function ThemeButton({ toggleTheme, className }: ButtonTheme) {
   const [isDark, setIsDark] = useState(false);
   const handleClick = () => {
     if (isDark) {
@@ -18,11 +20,13 @@ export default function ThemeButton({ toggleTheme }: ButtonTheme) {
         toggleTheme();
         handleClick();
       }}
-      className={`${
+      className={clsx(
+        className,
+        "cursor-pointer font-bold text-white w-12 h-8 px-2 rounded-full shadow-lg",
         isDark
           ? "bg-neutral-300 active:bg-neutral-400"
           : "bg-blue-950 active:bg-blue-900"
-      } cursor-pointer font-bold text-white w-12 h-8 px-2 rounded-full shadow-lg`}
+      )}
     >
       <div
         className={`${

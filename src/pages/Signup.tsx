@@ -10,14 +10,13 @@ import handleSubmit from "../utils/HandleSubmitForm";
 
 const initialUserState: User = { name: "", email: "", password: "" };
 
-export default function Login() {
+export default function Signup() {
   const [state, dispatch] = useReducer(reducer, initialUserState);
   const [toggleViewPassword, setToggleViewPassword] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const bgClass = theme === "light" ? "bg-amber-100" : "bg-neutral-800";
   const colorText = theme === "light" ? "text-neutral-900" : "text-amber-50";
-
   return (
     <div
       className={clsx(
@@ -42,7 +41,7 @@ export default function Login() {
             "text-2xl md:text-5xl mb-8 font-bold lg:font-extrabold"
           )}
         >
-          Login
+          Signup
         </h1>
         <InputField
           onChange={(e) => dispatch({ type: "name", payload: e.target.value })}
@@ -79,28 +78,28 @@ export default function Login() {
           {toggleViewPassword ? "hide" : "show"} passeword
         </button>
         <button
+          type="button"
           onClick={() => {
             handleSubmit(state);
             dispatch({ type: "reset" });
           }}
-          type="button"
           className={clsx(
             "p-2 w-full cursor-pointer my-4 rounded-full font-bold text-white",
             theme === "dark" ? "bg-neutral-900" : "bg-blue-400"
           )}
         >
-          Sign up
+          Sign in
         </button>
         <p>
-          You are new{" "}
+          already have an account?{" "}
           <span
-            onClick={() => navigate("/Signup")}
+            onClick={() => navigate("/Login")}
             className={clsx(
               "text-xs mt-3 underline cursor-pointer font-bold",
               theme === "dark" ? "text-blue-400 " : "text-blue-600"
             )}
           >
-            Sign up
+            Sign in
           </span>
         </p>
       </form>
