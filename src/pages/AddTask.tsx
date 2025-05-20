@@ -5,7 +5,10 @@ import type { PriorityType, TaskType } from "../types/types";
 
 export default function AddTask() {
   const [task, setTask] = useState("");
-  const [tasks, setTasks] = useState<TaskType[]>([]);
+  const [tasks, setTasks] = useState<TaskType[]>(() => {
+    const savedTasks = localStorage.getItem("alltask");
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [priority, setPriority] = useState<PriorityType>("low");
   const { theme } = useTheme();
