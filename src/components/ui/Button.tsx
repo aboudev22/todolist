@@ -5,12 +5,12 @@ import { buttonVariants } from "../style/button";
 export default function Button({
   variant,
   text,
-  onclick,
+  onClick,
   className,
 }: ButtonProps) {
   return (
     <button
-      onClick={onclick}
+      onClick={onClick}
       className={clsx(className, buttonVariants({ variant }))}
     >
       {text}

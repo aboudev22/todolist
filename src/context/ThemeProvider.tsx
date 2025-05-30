@@ -1,14 +1,20 @@
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { ThemeContext } from "./ThemeContext";
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
-  const toggleTheme = () => {
-    if (window.matchMedia("(perfers-color-scheme : dark)").matches) {
-      document.documentElement.classList.remove("dark");
-    } else {
+  useEffect(() => {
+    const isDarkPreferred = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    if (isDarkPreferred) {
       document.documentElement.classList.add("dark");
     }
+  }, []);
+
+  const toggleTheme = () => {
+    document.documentElement.classList.toggle("dark");
   };
+
   return (
     <ThemeContext.Provider value={{ toggleTheme }}>
       {children}

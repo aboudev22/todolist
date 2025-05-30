@@ -8,7 +8,7 @@ type ThemeType = {
 type ButtonProps = {
   variant: "simple" | "red" | "black";
   text: string;
-  onclick?: () => void;
+  onClick?: () => void;
   className?: string;
 } & VariantProps<typeof buttonVariants>;
 

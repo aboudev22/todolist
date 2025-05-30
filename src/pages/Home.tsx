@@ -8,8 +8,15 @@ export default function Home() {
     <div
       className={clsx("w-screen h-screen dark:bg-neutral-900 bg-amber-50 p-4")}
     >
-      <Button text="switch theme" variant="red" onclick={toggleTheme} />
-      <h1 className=" dark:text-white text-black  text-6xl font-bold">
+      <Button
+        text="switch theme"
+        variant="red"
+        onClick={() => {
+          console.log("clique");
+          toggleTheme();
+        }}
+      />
+      <h1 className="dark:text-white text-black  text-6xl font-bold">
         Up your productivity like never before
       </h1>
     </div>
