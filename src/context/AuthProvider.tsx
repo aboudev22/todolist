@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useLayoutEffect, useState, type ReactNode } from "react";
 import { AuthContext } from "./AuthContext";
 import { getlocalItem } from "../utils/getLocalItem";
 
@@ -9,7 +9,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     console.log("connecter");
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const token = getlocalItem("token");
     if (!token.trim()) {
       console.log("Token indisponible vous n'etes pas connecter");
