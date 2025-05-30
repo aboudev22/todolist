@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import type { ThemeType } from "../types/types";
+import type { ThemeProps } from "../types/types";
 
-export const ThemeContext = createContext<ThemeType | null>(null);
+export const ThemeContext = createContext<ThemeProps | null>(null);
