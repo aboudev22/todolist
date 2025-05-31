@@ -17,4 +17,28 @@ type ButtonProps = {
   children?: ReactNode;
 } & VariantProps<typeof buttonVariants>;
 
-export type { ThemeProps, ButtonProps, ThemeType };
+type TaskProps = {
+  description: string;
+  finished: boolean;
+  date: Date;
+  id: number;
+};
+
+type TaskActionType =
+  | { type: "remove"; payload: number }
+  | { type: "toggle"; payload: number }
+  | { type: "add"; payload: TaskProps };
+
+type TaskContextType = {
+  tasks: TaskProps[];
+  dispatch: React.Dispatch<TaskActionType>;
+};
+
+export type {
+  ThemeProps,
+  ButtonProps,
+  ThemeType,
+  TaskProps,
+  TaskActionType,
+  TaskContextType,
+};

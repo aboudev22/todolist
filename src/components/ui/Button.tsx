@@ -7,13 +7,15 @@ export default function Button({
   onClick,
   className,
   children,
+  text,
 }: ButtonProps) {
   return (
     <button
       onClick={onClick}
+      type="button"
       className={clsx(className, buttonVariants({ variant }))}
     >
-      {children}
+      {children} {text}
     </button>
   );
 }

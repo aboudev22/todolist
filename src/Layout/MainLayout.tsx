@@ -9,7 +9,6 @@ export default function MainLayout() {
   return (
     <div>
       <Button
-        text="switch theme"
         variant="red"
         onClick={() => {
           toggleTheme();
