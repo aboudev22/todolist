@@ -14,6 +14,7 @@ function reducer(state: TaskProps[], action: TaskActionType): TaskProps[] {
           finished: false,
           id: Date.now(),
           date: action.payload.date,
+          priority: action.payload.priority,
         },
       ];
     case "remove":

@@ -17,11 +17,14 @@ type ButtonProps = {
   children?: ReactNode;
 } & VariantProps<typeof buttonVariants>;
 
+type PriorityType = "low" | "medium" | "high";
+
 type TaskProps = {
   description: string;
   finished: boolean;
   date: Date;
   id: number;
+  priority: PriorityType;
 };
 
 type TaskActionType =
@@ -41,4 +44,5 @@ export type {
   TaskProps,
   TaskActionType,
   TaskContextType,
+  PriorityType,
 };
