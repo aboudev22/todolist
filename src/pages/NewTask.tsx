@@ -6,8 +6,8 @@ import useTasks from "../hooks/useTasks";
 import type { PriorityType } from "../types/types";
 
 export default function NewTask() {
-  const [priority, setPriority] = useState<PriorityType>("low");
   const { dispatch } = useTasks();
+  const [priority, setPriority] = useState<PriorityType>("low");
   const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const refForm = useRef<HTMLInputElement | null>(null);
@@ -21,6 +21,8 @@ export default function NewTask() {
       description: description.trim(),
     };
     dispatch({ type: "add", payload: task });
+    setDescription("");
+    setSelectedDate(new Date());
   };
   const triggerDatePicker = () => {
     if (refForm.current) {
