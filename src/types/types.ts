@@ -30,6 +30,7 @@ type TaskProps = {
 type TaskActionType =
   | { type: "remove"; payload: number }
   | { type: "toggle"; payload: number }
+  | { type: "edit"; payload: { description: string; id: number } }
   | { type: "add"; payload: TaskProps };
 
 type TaskContextType = {

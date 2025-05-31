@@ -20,6 +20,12 @@ function reducer(state: TaskProps[], action: TaskActionType): TaskProps[] {
           priority: action.payload.priority,
         },
       ];
+    case "edit":
+      return state.map((task) =>
+        task.id === action.payload.id
+          ? { ...task, description: action.payload.description }
+          : task
+      );
     case "remove":
       return state.filter((tasks) => tasks.id !== action.payload);
     case "toggle":

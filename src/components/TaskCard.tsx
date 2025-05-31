@@ -35,15 +35,16 @@ export default function TaskCard({
             "text-xs rounded-xs p-1",
             priority === "low" ? "bg-gray-300" : "",
             priority === "medium" ? "bg-white" : "",
-            priority === "medium" ? "bg-yellow-300" : ""
+            priority === "high" ? "bg-yellow-300" : ""
           )}
         >
           {priority}
         </p>
+
         <Trash
           onClick={() => dispatch({ type: "remove", payload: id })}
           size={16}
-          className="cursor-pointer hover:rotate-12 transition text-black"
+          className="cursor-pointer hover:rotate-12 transition text-white"
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { CalendarDays } from "lucide-react";
+import { BrushCleaning, CalendarDays } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import useTasks from "../hooks/useTasks";
 import TaskCard from "../components/TaskCard";
@@ -7,7 +7,7 @@ import TaskCard from "../components/TaskCard";
 export default function Home() {
   const dateRef = useRef<HTMLInputElement | null>(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [focusDate, setFocusDate] = useState<Date[]>([]);
+  const [focusDates, setFocusDates] = useState<Date[]>([]);
   const { tasks } = useTasks();
 
   const isSameDay = (a: Date | string, b: Date | string) => {
@@ -31,7 +31,7 @@ export default function Home() {
       newDate.setDate(selectedDate.getDate() + i);
       dates.push(newDate);
     }
-    setFocusDate(dates);
+    setFocusDates(dates);
   }, [selectedDate]);
 
   const handleDatePickedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +55,7 @@ export default function Home() {
       )}
     >
       <nav className="flex items-center gap-[1px]">
-        {focusDate.map((date, index) => (
+        {focusDates.map((date, index) => (
           <div
             onClick={() => setSelectedDate(date)}
             key={index}
@@ -86,16 +86,23 @@ export default function Home() {
         </form>
       </nav>
       <div className="flex flex-col gap-1 mt-5">
-        {dayTasks().map((task, index) => (
-          <TaskCard
-            key={index}
-            date={task.date}
-            description={task.description}
-            finished={task.finished}
-            id={task.id}
-            priority={task.priority}
-          />
-        ))}
+        {dayTasks().length > 0 ? (
+          dayTasks().map((task, index) => (
+            <TaskCard
+              key={index}
+              date={task.date}
+              description={task.description}
+              finished={task.finished}
+              id={task.id}
+              priority={task.priority}
+            />
+          ))
+        ) : (
+          <div className="w-full flex-col h-full flex justify-center items-center">
+            <BrushCleaning className="stroke-1" size={64} />
+            <p className="dark:text-white text-dark">Empty list</p>
+          </div>
+        )}
       </div>
     </div>
   );
