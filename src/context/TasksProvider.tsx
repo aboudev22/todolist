@@ -1,4 +1,4 @@
-import { useEffect, useReducer, type ReactNode } from "react";
+import { useLayoutEffect, useReducer, type ReactNode } from "react";
 import type { TaskActionType, TaskProps } from "../types/types";
 import { TaskContext } from "./TasksContext";
 
@@ -35,7 +35,7 @@ function reducer(state: TaskProps[], action: TaskActionType): TaskProps[] {
 
 export default function TasksProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialeState);
-  useEffect(() => {
+  useLayoutEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(state));
   }, [state]);
   return (

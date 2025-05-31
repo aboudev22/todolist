@@ -1,11 +1,28 @@
 import clsx from "clsx";
 import { CalendarDays } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import useTasks from "../hooks/useTasks";
+import TaskCard from "../components/TaskCard";
 
 export default function Home() {
   const dateRef = useRef<HTMLInputElement | null>(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [focusDate, setFocusDate] = useState<Date[]>([]);
+  const { tasks } = useTasks();
+
+  const isSameDay = (a: Date | string, b: Date | string) => {
+    const d1 = typeof a === "string" ? new Date(a) : a;
+    const d2 = typeof b === "string" ? new Date(b) : b;
+
+    return (
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate()
+    );
+  };
+
+  const dayTasks = () =>
+    tasks.filter((task) => isSameDay(task.date, selectedDate));
 
   useEffect(() => {
     const dates: Date[] = [];
@@ -30,11 +47,6 @@ export default function Home() {
       dateRef.current.showPicker();
     }
   };
-
-  const isSameDay = (d1: Date, d2: Date) =>
-    d1.getDate() === d2.getDate() &&
-    d1.getMonth() === d2.getMonth() &&
-    d1.getFullYear() === d2.getFullYear();
 
   return (
     <div
@@ -73,6 +85,18 @@ export default function Home() {
           />
         </form>
       </nav>
+      <div className="flex flex-col gap-1 mt-5">
+        {dayTasks().map((task, index) => (
+          <TaskCard
+            key={index}
+            date={task.date}
+            description={task.description}
+            finished={task.finished}
+            id={task.id}
+            priority={task.priority}
+          />
+        ))}
+      </div>
     </div>
   );
 }
