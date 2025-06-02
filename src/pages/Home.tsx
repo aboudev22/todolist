@@ -3,12 +3,14 @@ import { BrushCleaning, CalendarDays } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import useTasks from "../hooks/useTasks";
 import TaskCard from "../components/TaskCard";
+import type { TaskProps } from "../types/types";
 
 export default function Home() {
   const dateRef = useRef<HTMLInputElement | null>(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [focusDates, setFocusDates] = useState<Date[]>([]);
   const { tasks } = useTasks();
+  const [pinTasks, setPinTasks] = useState<TaskProps[]>([]);
 
   const isSameDay = (a: Date | string, b: Date | string) => {
     const d1 = typeof a === "string" ? new Date(a) : a;
@@ -85,6 +87,21 @@ export default function Home() {
           />
         </form>
       </nav>
+      {pinTasks.length > 0 ? (
+        <div className="w-fit">
+          <p>pin</p>
+          {pinTasks.map((task, index) => (
+            <TaskCard
+              key={index}
+              date={task.date}
+              description={task.description}
+              finished={task.finished}
+              id={task.id}
+              priority={task.priority}
+            />
+          ))}
+        </div>
+      ) : null}
       <div className="flex flex-col gap-1 mt-5">
         {dayTasks().length > 0 ? (
           dayTasks().map((task, index) => (
