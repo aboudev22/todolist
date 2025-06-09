@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { BrushCleaning, CalendarDays } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import useTasks from "../hooks/useTasks";
 import TaskCard from "../components/TaskCard";
 import type { TaskProps } from "../types/types";
@@ -50,6 +51,19 @@ export default function Home() {
     }
   };
 
+  const containerVariants = {
+    animate: {
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemsVariants = {
+    initial: { y: 20, opacity: 0, scale: 1 },
+    animate: { y: 0, opacity: 1, scale: 1 },
+  };
+
   return (
     <div
       className={clsx(
@@ -92,6 +106,7 @@ export default function Home() {
           <p>pin</p>
           {pinTasks.map((task, index) => (
             <TaskCard
+              variants={itemsVariants}
               key={index}
               date={task.date}
               description={task.description}
@@ -102,25 +117,29 @@ export default function Home() {
           ))}
         </div>
       ) : null}
-      <div className="flex flex-col gap-1 mt-5">
-        {dayTasks().length > 0 ? (
-          dayTasks().map((task, index) => (
-            <TaskCard
-              key={index}
-              date={task.date}
-              description={task.description}
-              finished={task.finished}
-              id={task.id}
-              priority={task.priority}
-            />
-          ))
-        ) : (
-          <div className="w-full flex-col h-full flex justify-center items-center">
-            <BrushCleaning className="stroke-1" size={64} />
-            <p className="dark:text-white text-dark">Empty list</p>
-          </div>
-        )}
-      </div>
+
+      {dayTasks().length > 0 ? (
+        <motion.div
+          variants={containerVariants}
+          initial="initial"
+          animate="animate"
+          className="flex flex-col gap-1 mt-5"
+        >
+          <AnimatePresence>
+            {dayTasks().map((task) => (
+              <TaskCard variants={itemsVariants} key={task.id} {...task} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      ) : (
+        <motion.div
+          variants={itemsVariants}
+          className="w-full flex-col h-full flex justify-center items-center"
+        >
+          <BrushCleaning className="stroke-1" size={64} />
+          <p className="dark:text-white text-dark">Empty list</p>
+        </motion.div>
+      )}
     </div>
   );
 }
