@@ -5,6 +5,7 @@ import type { TasksProps } from "../types/types";
 interface TasksState {
   tasks: TasksProps[];
   pin: number[];
+  bookmark: number[];
 
   addTask: (task: TasksProps) => void;
   toggleTask: (id: number) => void;
@@ -16,6 +17,7 @@ const useTasks = create(
     (set) => ({
       tasks: [],
       pin: [],
+      bookmark: [],
 
       addTask: (task) =>
         set((state) => ({
