@@ -37,40 +37,42 @@ export default function NewTask() {
         className="flex flex-col gap-4"
         action=""
       >
-        <input
-          defaultValue=""
-          {...register("name", { required: true })}
-          type="text"
-          placeholder="name"
-          className="w-sm p-2 border-2 border-violet-200"
-        />
-        {errors.name && (
-          <span className="text-red-500">le nom est obligatoire</span>
-        )}
-
-        <div>
+        <div className="flex flex-col">
           <input
             defaultValue=""
-            {...register("lastName", { required: true })}
+            {...register("name")}
+            type="text"
+            placeholder="name"
+            className="w-sm p-2 border-2 border-violet-200"
+          />
+          {errors.name && (
+            <span className="text-red-500">{errors.name.message}</span>
+          )}
+        </div>
+
+        <div className="flex flex-col">
+          <input
+            defaultValue=""
+            {...register("lastName")}
             type="text"
             placeholder="lastname"
             className="w-sm p-2 border-2 border-violet-200"
           />
           {errors.name && (
-            <span className="text-red-500">le nom est obligatoire</span>
+            <span className="text-red-500">{errors.lastName?.message}</span>
           )}
         </div>
         <input
           defaultValue=""
           {...register("age")}
-          type="text"
+          type="number"
           placeholder="age"
           className="w-sm p-2 border-2 border-violet-200"
         />
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => reset()}
-          type="button"
+          type="submit"
           className="p-1 text-xs text-violet-300 bg-black w-fit self-center rounded-md cursor-pointer"
         >
           submit
