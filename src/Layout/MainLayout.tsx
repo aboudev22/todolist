@@ -1,36 +1,29 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import Button from "../components/ui/Button";
-import useTheme from "../hooks/useTheme";
-import { Moon, Sun } from "lucide-react";
+import {
+  BookTask,
+  FinishedTask,
+  PinTask,
+  TaskBarDate,
+  ThemeButton,
+} from "../components/index";
 
 export default function MainLayout() {
-  const { toggleTheme, theme } = useTheme();
   return (
-    <div>
-      <Button
-        variant="red"
-        onClick={() => {
-          toggleTheme();
-        }}
-        className="absolute right-2 top-2 shadow-md/45 dark:shadow-red-500"
-      >
-        {theme === "dark" ? (
-          <Sun
-            className="text-white transition-all duration-400 ease-out"
-            size={16}
-          />
-        ) : (
-          <Moon
-            size={16}
-            className="text-white transition-all duration-400 ease-out"
-          />
-        )}
-      </Button>
-      <NavBar />
-      <main>
-        <Outlet />
-      </main>
-    </div>
+    <>
+      <div className="w-screen h-screen dark:bg-neutral-800 bg-slate-100 overflow-hidden flex transition-all duration-500">
+        <ThemeButton />
+        <div className="w-32 lg:w-64 bg-neutral-300 rounded-md p-2 m-2 flex flex-col items-center">
+          <TaskBarDate />
+          <PinTask />
+          <FinishedTask />
+          <BookTask />
+        </div>
+        <main className="flex-1 h-screen">
+          <Outlet />
+        </main>
+        <NavBar />
+      </div>
+    </>
   );
 }

@@ -9,7 +9,7 @@ export default function NavBar() {
       <Link
         className={clsx(
           "text-xs p-2 text-white rounded-md hover:bg-black/5 dark:hover:bg-white/5",
-          location.pathname === "/" ? "font-extrabold" : "font-bold"
+          location.pathname === "" ? "font-extrabold" : "font-bold"
         )}
         to="/"
       >
