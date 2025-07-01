@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import SelectedDays from "./components/SelectedDays";
+import TaskCard from "./components/TaskCard";
 import useTasks from "./stores/tasksStore";
 import useHeaderDAte from "./utils/headerDate";
 
@@ -14,7 +15,7 @@ type TaskType = {
 export default function App() {
   const today = useHeaderDAte();
   const [d, setD] = useState(new Date());
-  const { tasks, addTask } = useTasks();
+  const { tasks, addTask, toggleTask } = useTasks();
   const [viewDrawer, setViewDrawer] = useState(false);
   const ref = useRef<HTMLInputElement | null>(null);
 
@@ -72,7 +73,21 @@ export default function App() {
           </header>
           <section className="flex flex-col">
             <p className="text-sm font-bold">{tasks.length} Tasks</p>
-            <AnimatePresence>{tasks.length > 0 && <div></div>}</AnimatePresence>
+            <AnimatePresence>
+              {tasks.length > 0 && (
+                <div>
+                  {tasks.map((item) => (
+                    <TaskCard
+                      key={item.id}
+                      id={item.id}
+                      onClick={() => toggleTask(item.id)}
+                      finished={item.finished}
+                      description={item.description}
+                    />
+                  ))}
+                </div>
+              )}
+            </AnimatePresence>
           </section>
         </main>
       </div>
@@ -95,6 +110,7 @@ export default function App() {
             className="absolute overflow-hidden p-8 top-0 bottom-0 left-0 right-0 bg-black/30 z-10 flex justify-center items-center lg:items-end lg:pb-36"
           >
             <motion.form
+              onSubmit={(e) => e.preventDefault()}
               initial={{ y: 200 }}
               animate={{ y: 0 }}
               exit={{ y: 200 }}
