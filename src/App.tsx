@@ -1,15 +1,40 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SelectedDays from "./components/SelectedDays";
 import useTasks from "./stores/tasksStore";
 import useHeaderDAte from "./utils/headerDate";
 
+type TaskType = {
+  description: string;
+  finished: boolean;
+  id: number;
+};
+
 export default function App() {
   const today = useHeaderDAte();
   const [d, setD] = useState(new Date());
-  const { tasks } = useTasks();
+  const { tasks, addTask } = useTasks();
   const [viewDrawer, setViewDrawer] = useState(false);
+  const ref = useRef<HTMLInputElement | null>(null);
+
+  const [description, setDescription] = useState("");
+
+  const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDescription(e.target.value);
+  };
+  const handleAddTask = () => {
+    if (!description.trim()) return;
+
+    const task: TaskType = {
+      description: description,
+      finished: false,
+      id: Date.now(),
+    };
+    addTask(task);
+    setDescription("");
+    setViewDrawer(false);
+  };
 
   useEffect(() => {
     const now = new Date();
@@ -23,6 +48,11 @@ export default function App() {
 
     return () => clearTimeout(timeout);
   }, [d]);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    ref.current.focus();
+  }, [viewDrawer]);
 
   return (
     <div className="realative w-screen h-screen flex justify-center items-center bg-slate-200">
@@ -62,7 +92,7 @@ export default function App() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute overflow-hidden p-8 top-0 bottom-0 left-0 right-0 bg-black/30 z-10 flex justify-center items-end pb-36"
+            className="absolute overflow-hidden p-8 top-0 bottom-0 left-0 right-0 bg-black/30 z-10 flex justify-center items-center lg:items-end lg:pb-36"
           >
             <motion.form
               initial={{ y: 200 }}
@@ -74,6 +104,9 @@ export default function App() {
             >
               <div className="bg-slate-100 border-t-2 border-l-2 border-white rounded-xl px-5 shadow-2xl/50 flex justify-center items-center w-full">
                 <input
+                  ref={ref}
+                  value={description}
+                  onChange={(e) => handleChangeDescription(e)}
                   type="text"
                   placeholder="new task..."
                   className="w-full h-10  focus:outline-none text-neutral-600 font-bold"
@@ -89,6 +122,7 @@ export default function App() {
                 </p>
               </div>
               <motion.button
+                onClick={handleAddTask}
                 type="button"
                 whileTap={{ scale: 0.9 }}
                 className="bg-black shadow-xl/40 p-2 rounded-full ml-1 cursor-pointer"
