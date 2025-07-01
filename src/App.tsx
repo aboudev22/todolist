@@ -1,7 +1,104 @@
+import { AnimatePresence, motion } from "framer-motion";
+import { Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import SelectedDays from "./components/SelectedDays";
+import useTasks from "./stores/tasksStore";
+import useHeaderDAte from "./utils/headerDate";
+
 export default function App() {
+  const today = useHeaderDAte();
+  const [d, setD] = useState(new Date());
+  const { tasks } = useTasks();
+  const [viewDrawer, setViewDrawer] = useState(false);
+
+  useEffect(() => {
+    const now = new Date();
+    const nextMidnight = new Date(now);
+    nextMidnight.setHours(24, 0, 0, 0);
+    const msUntilMidnight = nextMidnight.getTime() - now.getTime();
+
+    const timeout = setTimeout(() => {
+      setD(new Date());
+    }, msUntilMidnight);
+
+    return () => clearTimeout(timeout);
+  }, [d]);
+
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
-      <div>TODOLIST</div>
+    <div className="realative w-screen h-screen flex justify-center items-center bg-slate-200">
+      <div className="flex flex-col p-5 items-center justify-start h-full w-full lg:w-1/2">
+        <header className="flex justify-between w-full">
+          <p className="text-sm font-bold text-neutral-500">
+            {today.toDateString()}
+          </p>
+          <p className="text-sm font-bold text-neutral-500">
+            {today.toLocaleTimeString()}
+          </p>
+        </header>
+        <main className="flex flex-col w-full mt-5 gap-5">
+          <header className="flex flex-col w-full gap-5">
+            <h1 className="text-3xl text-blue-500 font-black">To-do-List</h1>
+            <SelectedDays date={d} />
+          </header>
+          <section className="flex flex-col">
+            <p className="text-sm font-bold">{tasks.length} Tasks</p>
+            <AnimatePresence>{tasks.length > 0 && <div></div>}</AnimatePresence>
+          </section>
+        </main>
+      </div>
+      <motion.button
+        onClick={() => setViewDrawer(true)}
+        whileTap={{ scale: 0.9 }}
+        layout
+        className="absolute z-[5] bottom-20 right-5 lg:right-[20%] cursor-pointer bg-blue-500 rounded-full p-2"
+      >
+        <Plus color="white" size={35} />
+      </motion.button>
+      <AnimatePresence>
+        {viewDrawer && (
+          <motion.div
+            onClick={() => setViewDrawer(false)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="absolute overflow-hidden p-8 top-0 bottom-0 left-0 right-0 bg-black/30 z-10 flex justify-center items-end pb-36"
+          >
+            <motion.form
+              initial={{ y: 200 }}
+              animate={{ y: 0 }}
+              exit={{ y: 200 }}
+              onClick={(e) => e.stopPropagation()}
+              action=""
+              className="flex justify-center items-center w-full md:w-lg xl:w-xl rounded-xl p-2 bg-white/60"
+            >
+              <div className="bg-slate-100 border-t-2 border-l-2 border-white rounded-xl px-5 shadow-2xl/50 flex justify-center items-center w-full">
+                <input
+                  type="text"
+                  placeholder="new task..."
+                  className="w-full h-10  focus:outline-none text-neutral-600 font-bold"
+                />
+                <p className="text-center hidden lg:flex p-1 bg-neutral-200 rounded-md inset-shadow-2xs inset-shadow-neutral-800/20 font-bold">
+                  ctrl
+                </p>
+                <p className="text-center hidden lg:flex p-1 font-bold text-sm">
+                  +
+                </p>
+                <p className="text-center hidden lg:flex p-1 px-3 bg-neutral-200 rounded-md inset-shadow-2xs inset-shadow-neutral-800/20 font-bold">
+                  &#x23CE;
+                </p>
+              </div>
+              <motion.button
+                type="button"
+                whileTap={{ scale: 0.9 }}
+                className="bg-black shadow-xl/40 p-2 rounded-full ml-1 cursor-pointer"
+              >
+                <Plus size={30} color="white" />
+              </motion.button>
+            </motion.form>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
