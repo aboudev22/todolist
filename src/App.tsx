@@ -125,7 +125,7 @@ export default function App() {
                 onClick={handleAddTask}
                 type="button"
                 whileTap={{ scale: 0.9 }}
-                className="bg-black shadow-xl/40 p-2 rounded-full ml-1 cursor-pointer"
+                className="bg-blue-500 shadow-xl/40 p-2 rounded-full ml-1 cursor-pointer"
               >
                 <Plus size={30} color="white" />
               </motion.button>
