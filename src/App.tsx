@@ -20,7 +20,9 @@ export default function App() {
   const [viewDrawer, setViewDrawer] = useState(false);
   const ref = useRef<HTMLInputElement | null>(null);
 
-  const [formDate, setFormDate] = useState<Date>(d);
+  const [formDate, setFormDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [description, setDescription] = useState("");
   const [selected, setSelected] = useState(d);
 
@@ -60,7 +62,7 @@ export default function App() {
   }, [viewDrawer]);
 
   const handleFormDateChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setFormDate(new Date(e.currentTarget.value));
+    setFormDate(e.currentTarget.value);
   };
 
   const dayTasks = tasks.filter(
@@ -88,26 +90,28 @@ export default function App() {
             />
           </header>
           <section className="flex flex-col h-full">
-            <p className="text-sm font-bold">{tasks.length} Tasks</p>
-            <AnimatePresence mode="popLayout">
-              {dayTasks.length > 0 && (
-                <motion.div className="flex flex-col overflow-auto gap-2 bg-neutral-200 px-8 py-8">
-                  <AnimatePresence>
-                    {dayTasks.map((item) => (
-                      <TaskCard
-                        key={item.id}
-                        id={item.id}
-                        date={item.date}
-                        onDelete={() => removeTask(item.id)}
-                        onChange={() => toggleTask(item.id)}
-                        finished={item.finished}
-                        description={item.description}
-                      />
-                    ))}
-                  </AnimatePresence>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <div className="flex flex-col w-fit gap-2">
+              <p className="text-sm font-bold">{tasks.length} Tasks</p>
+            </div>
+            {dayTasks.length > 0 ? (
+              <AnimatePresence>
+                <div className="flex flex-col overflow-hidden gap-2 bg-neutral-200 px-8 py-8">
+                  {dayTasks.map((item) => (
+                    <TaskCard
+                      key={item.id}
+                      id={item.id}
+                      date={item.date}
+                      onDelete={() => removeTask(item.id)}
+                      onChange={() => toggleTask(item.id)}
+                      finished={item.finished}
+                      description={item.description}
+                    />
+                  ))}
+                </div>
+              </AnimatePresence>
+            ) : (
+              <div className="w-full p-10 flex justify-center items-center bg-slate-200"></div>
+            )}
           </section>
         </main>
       </div>
@@ -150,7 +154,7 @@ export default function App() {
                 <input
                   type="date"
                   onChange={handleFormDateChange}
-                  value={formDate.toDateString()}
+                  value={formDate}
                   className="font-bold text-sm text-neutral-800 focus:outline-none"
                 />
               </div>

@@ -42,7 +42,7 @@ export default function TaskCard(props: TaskCardProps) {
   return (
     <motion.div
       layout
-      initial={{ y: 80, opacity: 0 }}
+      initial={false}
       animate={{ y: 0, opacity: 1 }}
       exit={{ opacity: 0, transition: { delay: 0.4 } }}
       className="relative bg-red-500 rounded-lg"
@@ -61,7 +61,7 @@ export default function TaskCard(props: TaskCardProps) {
         dragConstraints={ref}
         ref={ref}
         dragMomentum={false}
-        className="flex relative z-[5] justify-center px-6 py-3 gap-5 items-center bg-white rounded-md will-change-transform"
+        className="flex active:cursor-grabbing relative z-[5] justify-center px-6 py-3 gap-5 items-center bg-white rounded-md will-change-transform"
       >
         <input
           type="checkbox"
@@ -83,6 +83,7 @@ export default function TaskCard(props: TaskCardProps) {
           {new Date(props.date).toDateString() ?? "Date inconnue"}
         </p>
       </motion.div>
+
       <div className="absolute z-[3] w-full top-0 bottom-0 flex justify-between items-center px-5">
         <div className="flex justify-center items-center gap-2">
           <Trash2
