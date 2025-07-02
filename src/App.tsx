@@ -69,7 +69,7 @@ export default function App() {
         <main className="flex flex-col w-full mt-5 gap-5">
           <header className="flex flex-col w-full gap-5">
             <h1 className="text-3xl text-blue-500 font-black">To-do-List</h1>
-            <SelectedDays date={d} />
+            <SelectedDays currentDay={d} date={d} />
           </header>
           <section className="flex flex-col h-full">
             <p className="text-sm font-bold">{tasks.length} Tasks</p>

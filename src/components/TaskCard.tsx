@@ -13,7 +13,6 @@ interface TaskCard {
 
 export default function TaskCard(props: TaskCard) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const [x, setX] = useState(0);
   const [direction, setDirection] = useState(1);
 
   const handleDrag = (
@@ -37,25 +36,19 @@ export default function TaskCard(props: TaskCard) {
     if (info.offset.x > 500 || info.offset.x < -500) {
       props.onDelete(props.id);
     }
-
-    if (info.offset.x < 100) {
-      setX(0);
-    } else {
-      setX(100);
-    }
   };
 
   return (
     <motion.div
       layout
-      initial={false}
+      initial={{ y: 80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
       exit={{ opacity: 0, transition: { delay: 0.4 } }}
       className="relative bg-red-500 rounded-lg"
     >
       <motion.div
         layout
         drag="x"
-        animate={{ x }}
         exit={{ translateX: `${direction * 100}%` }}
         transition={{
           duration: 0.5,
@@ -64,7 +57,7 @@ export default function TaskCard(props: TaskCard) {
         }}
         onDrag={handleDrag}
         onDragEnd={onDragEnd}
-        dragConstraints={{ left: 0, right: 0 }}
+        dragConstraints={ref}
         ref={ref}
         dragMomentum={false}
         className="flex relative z-[5] justify-center px-6 py-3 gap-5 items-center bg-white rounded-md will-change-transform"

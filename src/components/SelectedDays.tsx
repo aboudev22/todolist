@@ -3,7 +3,13 @@ import { useState } from "react";
 
 const daysLabels = ["S", "M", "T", "W", "T", "F", "S"];
 
-export default function SelectedDays({ date }: { date: Date }) {
+export default function SelectedDays({
+  date,
+  currentDay,
+}: {
+  date: Date;
+  currentDay: Date;
+}) {
   const startOfWeek = new Date(date);
   startOfWeek.setDate(date.getDate() - date.getDay());
 
@@ -13,13 +19,13 @@ export default function SelectedDays({ date }: { date: Date }) {
     return d;
   });
 
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(currentDay);
 
   return (
     <div className="flex items-center justify-between">
       {days.map((day, idx) => (
         <div
-          onClick={() => setSelected(idx)}
+          onClick={() => setSelected(day)}
           className="flex flex-col cursor-pointer"
           key={idx}
         >
@@ -27,7 +33,7 @@ export default function SelectedDays({ date }: { date: Date }) {
           <p
             className={clsx(
               "text-center py-1 px-2 rounded-full font-bold",
-              selected === idx ? "bg-blue-500" : ""
+              day.getDate() === selected.getDate() ? "bg-blue-500" : ""
             )}
           >
             {day.getDate()}
