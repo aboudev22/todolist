@@ -8,16 +8,3 @@ createRoot(document.getElementById("root")!).render(
     <App />
   </StrictMode>
 );
-
-
-// createRoot(document.getElementById("root")!).render(
-//   <StrictMode>
-//     <BrowserRouter>
-//       <TasksProvider>
-//         <ThemeProvider>
-//           <App />
-//         </ThemeProvider>
-//       </TasksProvider>
-//     </BrowserRouter>
-//   </StrictMode>
-// );

@@ -15,7 +15,7 @@ type TaskType = {
 export default function App() {
   const today = useHeaderDAte();
   const [d, setD] = useState(new Date());
-  const { tasks, addTask, toggleTask } = useTasks();
+  const { tasks, addTask, toggleTask, removeTask } = useTasks();
   const [viewDrawer, setViewDrawer] = useState(false);
   const ref = useRef<HTMLInputElement | null>(null);
 
@@ -56,7 +56,7 @@ export default function App() {
   }, [viewDrawer]);
 
   return (
-    <div className="realative w-screen h-screen flex justify-center items-center bg-slate-200">
+    <div className="realative w-screen h-screen overflow-scroll flex justify-center items-center bg-slate-200">
       <div className="flex flex-col p-5 items-center justify-start h-full w-full lg:w-1/2">
         <header className="flex justify-between w-full">
           <p className="text-sm font-bold text-neutral-500">
@@ -71,21 +71,24 @@ export default function App() {
             <h1 className="text-3xl text-blue-500 font-black">To-do-List</h1>
             <SelectedDays date={d} />
           </header>
-          <section className="flex flex-col">
+          <section className="flex flex-col h-full">
             <p className="text-sm font-bold">{tasks.length} Tasks</p>
-            <AnimatePresence>
+            <AnimatePresence mode="popLayout">
               {tasks.length > 0 && (
-                <div>
-                  {tasks.map((item) => (
-                    <TaskCard
-                      key={item.id}
-                      id={item.id}
-                      onClick={() => toggleTask(item.id)}
-                      finished={item.finished}
-                      description={item.description}
-                    />
-                  ))}
-                </div>
+                <motion.div className="flex flex-col overflow-auto gap-2 bg-neutral-200 px-8 py-8">
+                  <AnimatePresence>
+                    {tasks.map((item) => (
+                      <TaskCard
+                        key={item.id}
+                        id={item.id}
+                        onDelete={() => removeTask(item.id)}
+                        onChange={() => toggleTask(item.id)}
+                        finished={item.finished}
+                        description={item.description}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
               )}
             </AnimatePresence>
           </section>
