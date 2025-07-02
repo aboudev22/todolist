@@ -1,14 +1,15 @@
 import clsx from "clsx";
-import { useState } from "react";
 
 const daysLabels = ["S", "M", "T", "W", "T", "F", "S"];
 
 export default function SelectedDays({
   date,
-  currentDay,
+  selected,
+  handleSelected,
 }: {
   date: Date;
-  currentDay: Date;
+  selected: Date;
+  handleSelected: (date: Date) => void;
 }) {
   const startOfWeek = new Date(date);
   startOfWeek.setDate(date.getDate() - date.getDay());
@@ -19,13 +20,11 @@ export default function SelectedDays({
     return d;
   });
 
-  const [selected, setSelected] = useState(currentDay);
-
   return (
     <div className="flex items-center justify-between">
       {days.map((day, idx) => (
         <div
-          onClick={() => setSelected(day)}
+          onClick={() => handleSelected(day)}
           className="flex flex-col cursor-pointer"
           key={idx}
         >

@@ -5,6 +5,7 @@ type TaskType = {
   description: string;
   finished: boolean;
   id: number;
+  date: Date;
 };
 
 interface TaskStore {

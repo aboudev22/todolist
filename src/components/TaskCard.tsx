@@ -3,15 +3,16 @@ import { motion, type PanInfo } from "framer-motion";
 import { Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 
-interface TaskCard {
+interface TaskCardProps {
   description: string;
   finished: boolean;
   id: number;
+  date: Date;
   onDelete: (id: number) => void;
   onChange: (id: number) => void;
 }
 
-export default function TaskCard(props: TaskCard) {
+export default function TaskCard(props: TaskCardProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [direction, setDirection] = useState(1);
 
@@ -77,6 +78,9 @@ export default function TaskCard(props: TaskCard) {
           )}
         >
           {props.description}
+        </p>
+        <p className="text-sm font-bold text-neutral-700">
+          {new Date(props.date).toDateString() ?? "Date inconnue"}
         </p>
       </motion.div>
       <div className="absolute z-[3] w-full top-0 bottom-0 flex justify-between items-center px-5">

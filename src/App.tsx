@@ -10,6 +10,7 @@ type TaskType = {
   description: string;
   finished: boolean;
   id: number;
+  date: Date;
 };
 
 export default function App() {
@@ -19,7 +20,9 @@ export default function App() {
   const [viewDrawer, setViewDrawer] = useState(false);
   const ref = useRef<HTMLInputElement | null>(null);
 
+  const [formDate, setFormDate] = useState<Date>(d);
   const [description, setDescription] = useState("");
+  const [selected, setSelected] = useState(d);
 
   const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value);
@@ -31,6 +34,7 @@ export default function App() {
       description: description,
       finished: false,
       id: Date.now(),
+      date: new Date(formDate),
     };
     addTask(task);
     setDescription("");
@@ -55,6 +59,14 @@ export default function App() {
     ref.current.focus();
   }, [viewDrawer]);
 
+  const handleFormDateChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setFormDate(new Date(e.currentTarget.value));
+  };
+
+  const dayTasks = tasks.filter(
+    (el) => new Date(el.date).toDateString() === selected.toDateString()
+  );
+
   return (
     <div className="realative w-screen h-screen overflow-scroll flex justify-center items-center bg-slate-200">
       <div className="flex flex-col p-5 items-center justify-start h-full w-full lg:w-1/2">
@@ -69,18 +81,23 @@ export default function App() {
         <main className="flex flex-col w-full mt-5 gap-5">
           <header className="flex flex-col w-full gap-5">
             <h1 className="text-3xl text-blue-500 font-black">To-do-List</h1>
-            <SelectedDays currentDay={d} date={d} />
+            <SelectedDays
+              handleSelected={(day) => setSelected(day)}
+              selected={selected}
+              date={d}
+            />
           </header>
           <section className="flex flex-col h-full">
             <p className="text-sm font-bold">{tasks.length} Tasks</p>
             <AnimatePresence mode="popLayout">
-              {tasks.length > 0 && (
+              {dayTasks.length > 0 && (
                 <motion.div className="flex flex-col overflow-auto gap-2 bg-neutral-200 px-8 py-8">
                   <AnimatePresence>
-                    {tasks.map((item) => (
+                    {dayTasks.map((item) => (
                       <TaskCard
                         key={item.id}
                         id={item.id}
+                        date={item.date}
                         onDelete={() => removeTask(item.id)}
                         onChange={() => toggleTask(item.id)}
                         finished={item.finished}
@@ -130,16 +147,14 @@ export default function App() {
                   placeholder="new task..."
                   className="w-full h-10  focus:outline-none text-neutral-600 font-bold"
                 />
-                <p className="text-center hidden lg:flex p-1 bg-neutral-200 rounded-md inset-shadow-2xs inset-shadow-neutral-800/20 font-bold">
-                  ctrl
-                </p>
-                <p className="text-center hidden lg:flex p-1 font-bold text-sm">
-                  +
-                </p>
-                <p className="text-center hidden lg:flex p-1 px-3 bg-neutral-200 rounded-md inset-shadow-2xs inset-shadow-neutral-800/20 font-bold">
-                  &#x23CE;
-                </p>
+                <input
+                  type="date"
+                  onChange={handleFormDateChange}
+                  value={formDate.toDateString()}
+                  className="font-bold text-sm text-neutral-800 focus:outline-none"
+                />
               </div>
+
               <motion.button
                 onClick={handleAddTask}
                 type="button"
